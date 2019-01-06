@@ -1,0 +1,16 @@
+# Python
+*.pyc
+__pycache__/
+*.egg-info*
+dist/
+env/
+
+# JavaScript
+bundle.js
+node_modules/
+
+# text editor
+.vscode/
+
+# macOS system files
+*.DS_Store
