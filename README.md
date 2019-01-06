@@ -39,7 +39,7 @@ now to get the application up and running
 (env) ➜  ./bin/run
 ```
 now we can navigate to localhost in the browser to see a page rendered by our starter application that explains how it works a little further
-![starter page][https://imgur.com/a/urR3EAW]
+[starter page][https://imgur.com/a/urR3EAW]
 
 ## How it works
 todo
