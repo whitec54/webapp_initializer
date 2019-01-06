@@ -1,0 +1,19 @@
+#!/bin/bash
+set -euxo pipefail
+
+# Back end tools
+python3 -m venv env
+set +ux  # the activate script does some bad bash juju
+source env/bin/activate
+set -ux
+pip install --upgrade pip setuptools wheel
+
+# Front end tools
+pip install nodeenv
+nodeenv --python-virtualenv
+set +ux  # the activate script does some bad bash juju
+source env/bin/activate
+set -ux
+
+pip install -e .
+npm install .

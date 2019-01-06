@@ -1,0 +1,28 @@
+"""
+{{ appname }} development configuration.
+
+Andrew DeOrio <awdeorio@umich.edu>
+"""
+
+import os
+
+# Root of this application, useful if it doesn't occupy an entire domain
+APPLICATION_ROOT = '/'
+
+# Secret key for encrypting cookies
+SECRET_KEY = b'\x02\x8d\x8a\xdc:\xd7\xff\xb2\xa5eaa\x14\x84%B\xf7r\xe5S\xa6\xb6\xea\xf3'  # noqa: E501  pylint: disable=line-too-long
+SESSION_COOKIE_NAME = 'login'
+
+# File Upload to var/uploads/
+UPLOAD_FOLDER = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
+    'var', 'uploads'
+)
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
+MAX_CONTENT_LENGTH = 16 * 1024 * 1024
+
+# Database file is var/{{ appname }}.sqlite3
+DATABASE_FILENAME = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
+    'var', '{{ appname }}.sqlite3'
+)

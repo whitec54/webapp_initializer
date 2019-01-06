@@ -1,0 +1,24 @@
+"""
+{{ appname }} REST API index.  Returns list of resources.
+/api/
+Andrew DeOrio <awdeorio@umich.edu>
+"""
+import flask
+import {{ appname }}.model as model
+import {{ appname }}
+
+
+@{{ appname }}.app.route('/api/v1/hello', methods=["GET"])
+def main():
+    """Return resources and their URLs."""
+    connection = model.get_db()
+    cur = connection.execute(
+        "SELECT message FROM messages where id = ?",
+        (str(1),)
+    )
+    message = cur.fetchone()["message"]
+    
+    context = {
+        "message": "Hello from the api in {{ appname }}/api/main.main, the sql message with id 1 is: " + message
+    }
+    return flask.jsonify(**context)

@@ -1,0 +1,71 @@
+import React from 'react';
+import fetch from 'isomorphic-fetch';
+
+
+class HelloContainer extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+        hello_message:"Message has not yet been recieved from the api",
+        message_uri: "http://127.0.0.1:8000/api/v1/hello"
+    }
+  }
+
+  componentDidMount() {
+      fetch(this.state.message_uri)
+      .then((response) => {
+        if (!response.ok) throw Error(response.statusText);
+        return response.json();
+      })
+      .then((data) => {
+        this.setState({
+            hello_message: data.message
+        });
+      })
+      .catch(error => console.log(error)); // eslint-disable-line no-console
+  }
+
+  render() {
+    return (
+      <div className="Hello Message">
+        <h3>The api returned the following message:</h3>
+        <h4>{this.state.hello_message}</h4>
+       
+        <p> Hi There. This tool generates the foundation for a reactive web application using Flask, React, and Sqlite. I've included and explaination of what happened to render this page below. It exists to help you understand the structure of the application / how the pieces work together. It is not going to teach you Flask, React, or Sqlite3. If you are not comfortable with them already, this tool likely won't be useful to you</p>
+        <h2>What happened to see this page</h2>
+        <h3>Before you typed anything into the browser</h3>
+        <ul>
+          <li>You ran bin/install
+            <ul>
+              <li>This created a virtual envirment for python and js dependancies.</li>
+              <li>it also installed the dependancies in said enviroment.</li>
+            </ul>
+          </li>
+          <li>You ran bin/run 
+            <ul>
+              <li>This used the .sql files in app_root/sql to instantiate a db stored in app_root/var/{{ appname }}.sqlite3</li>
+              <li>It also bundled all of the .jsx files found in app_root/{{ appname }}/js/ into a file app_root/{{ appname }}/static/js/bundle.js with webpack</li>
+              <li>It left webpack watching so saved changes in the jsx files would automatically update the bundle.js</li>
+              <li>finally, it started the flask server</li>
+            </ul>
+          </li>
+        </ul>
+        <h3>After you typed something into the browser (note: all of this happens in an instant. It will not seem sequencial at all. You will only see the final state)</h3>
+        <ul>
+          <li>You typed the host name into the browser and hit enter</li>
+          <li>The request is handled by show_index() in APPROOT/{{ appname }}/views/index.py it returns the file APPROOT/{{ appname }}/templates/base.html. This page contains an empty div with the class "reactEntry" and script tag</li>
+          <li>once the html is on the page, the browser requests the bundle.js from the server because of the script tag</li>
+          <li>once bundle.js has been returned to the browser, your react code starts running. APPROOT/{{ appname }}/js/main.jsx renders an instance of the component HelloContainer in the reactEntry div</li>
+          <li>When HelloContainer (APPROOT/{{ appname }}/js/main.jsx) mounts, the function componentDidMount makes a get request to http://hostname/api/v1/hello</li>
+          <li>This request is handled by main() in APPROOT/{{ appname }}/api/main.py. It selects a message from the database and returns that message in a json object</li>
+          <li>HelloContainer's componentDidMount recieves that message and sets this.state.hello_message equal to its value</li>
+          <li>When the value changes, react automatically modifies the DOM to reflect the envariant defined in the HelloContainer's render function (NOTE: the text you are reading is also defined there). This causes the message to be displayed at the top of the page</li>
+          <li>tada</li>
+        </ul>
+      </div>
+    );
+  }
+}
+
+export default HelloContainer;

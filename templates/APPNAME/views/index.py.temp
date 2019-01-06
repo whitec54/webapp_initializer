@@ -1,0 +1,18 @@
+"""
+{{ appname }} index (main) view.
+
+URLs include:
+/
+
+Andrew DeOrio <awdeorio@umich.edu>
+"""
+import flask
+import {{ appname }}
+
+
+@{{ appname }}.app.route('/', methods=["GET", "POST"])
+def show_index():
+    """Display / route."""
+
+    context = {}
+    return flask.render_template("base.html", **context)

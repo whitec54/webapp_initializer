@@ -1,0 +1,7 @@
+"""
+Views, one for each {{ appname }} page.
+
+Andrew DeOrio <awdeorio@umich.edu>
+"""
+
+from {{ appname }}.views.index import show_index

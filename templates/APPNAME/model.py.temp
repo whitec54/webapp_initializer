@@ -1,0 +1,114 @@
+"""{{ appname }} model (database) API."""
+import sqlite3
+import flask
+import {{ appname }}
+
+
+def dict_factory(cursor, row):
+    """Convert database row objects to a dictionary.
+
+    This is useful for building dictionaries which are then used to render a
+    template.  Note that this would be inefficient for large queries.
+    """
+    output = {}
+    for idx, col in enumerate(cursor.description):
+        output[col[0]] = row[idx]
+    return output
+
+
+def get_db():
+    """Open a new database connection."""
+    if not hasattr(flask.g, 'sqlite_db'):
+        flask.g.sqlite_db = sqlite3.connect(
+            {{ appname }}.app.config['DATABASE_FILENAME'])
+        flask.g.sqlite_db.row_factory = dict_factory
+
+        # Foreign keys have to be enabled per-connection.  This is an sqlite3
+        # backwards compatibility thing.
+        flask.g.sqlite_db.execute("PRAGMA foreign_keys = ON")
+
+    return flask.g.sqlite_db
+
+
+@{{ appname }}.app.teardown_appcontext
+def close_db(error):
+    # pylint: disable=unused-argument
+    """Close the database at the end of a request."""
+    if hasattr(flask.g, 'sqlite_db'):
+        flask.g.sqlite_db.commit()
+        flask.g.sqlite_db.close()
+
+
+def get_post_exists(postid):
+    """Return true if postid exists, false otherwise."""
+    connection = get_db()
+    cur = connection.execute(
+        "SELECT postid FROM posts where postid = ?",
+        (str(postid),)
+    )
+    postid = cur.fetchone()
+    return bool(postid)
+
+
+def get_logname_likes_this(logname, postid):
+    """Return 1 if logname likes postid, 0 otherwise."""
+    connection = get_db()
+    cur = connection.execute(
+        "SELECT EXISTS( "
+        "  SELECT 1 FROM likes "
+        "    WHERE postid = ? "
+        "    AND owner = ? "
+        "    LIMIT 1"
+        ") AS logname_likes_this ",
+        (postid, logname)
+    )
+    return cur.fetchone()["logname_likes_this"]
+
+
+def get_num_likes(postid):
+    """Return number of likes on postid."""
+    connection = get_db()
+    cur = connection.execute(
+        "SELECT COUNT(*) AS likes_count FROM likes WHERE postid = ? ",
+        (postid,)
+    )
+    return cur.fetchone()["likes_count"]
+
+
+def create_like(logname, postid):
+    """Create one like on postid."""
+    connection = get_db()
+    connection.execute(
+        "INSERT INTO likes(owner, postid) "
+        "VALUES (?, ?) ",
+        (logname, postid)
+    )
+    {{ appname }}.app.logger.info("%s likes %s", logname, postid)
+
+
+def get_comments(postid):
+    """Return list of comments on postid."""
+    connection = get_db()
+    cur = connection.execute(
+        "SELECT commentid, owner, text "
+        "FROM comments "
+        "WHERE postid = ? "
+        "ORDER BY created ",
+        (postid,)
+    )
+    return cur.fetchall()
+
+
+def create_comment(logname, text, postid):
+    """Create a comment on postid and return commentid."""
+    connection = get_db()
+    connection.execute(
+        "INSERT INTO comments(owner, postid, text) "
+        "VALUES (?, ?, ?) ",
+        (logname, postid, text)
+    )
+    cur = connection.execute("SELECT last_insert_rowid() as commentid")
+    commentid = cur.fetchone() or flask.abort(404)
+    {{ appname }}.app.logger.info('%s commented "%s" on %s',
+                             logname, text, postid)
+    return commentid

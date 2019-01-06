@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>{{ appname }}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{{ appname }}">
+    <meta name="keywords" content="instagram, eecs485, {{ appname }}">
+    <meta name="author" content="Andrew DeOrio">
+    {% raw %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+  </head>
+
+  <body>
+    <div id="reactEntry">
+      Loading react ...
+    </div>
+    <!-- Load JavaScript -->
+    <!-- Put this at the end of body ref https://stackoverflow.com/questions/26566317/invariant-violation-registercomponent-target-container-is-not-a-dom-elem -->
+    <script type="text/javascript" src="{{ url_for('static', filename='js/bundle.js') }}"></script>
+  </body>
+  {% endraw %}
+</html>

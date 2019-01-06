@@ -1,0 +1,49 @@
+#!/bin/bash
+# {{ appname }}db
+#
+# Andrew DeOrio <awdeorio@umich.edu>
+
+# Path to database file
+DB_FILENAME=var/{{ appname }}.sqlite3
+
+# Stop on errors
+set -e
+
+# Sanity check command line options
+usage() {
+  echo "Usage: $0 (create|destroy|reset)"
+}
+
+if [ $# -ne 1 ]; then
+  usage
+  exit 1
+fi
+
+# Parse command line options
+case $1 in
+  "create")
+    if [ -e ${DB_FILENAME} ]; then
+      echo "Error: database already exists"
+      exit 1
+    fi
+    echo "+ sqlite3 ${DB_FILENAME} < sql/schema.sql"
+    sqlite3 ${DB_FILENAME} < sql/schema.sql
+    echo "+ sqlite3 ${DB_FILENAME} < sql/data.sql"
+    sqlite3 ${DB_FILENAME} < sql/data.sql
+    ;;
+
+  "destroy")
+    echo "+ rm -rf ${DB_FILENAME}"
+    rm -rf ${DB_FILENAME}
+    ;;
+
+  "reset")
+    $0 destroy
+    $0 create
+    ;;
+
+  *)
+    usage
+    exit 1
+    ;;
+esac

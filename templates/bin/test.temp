@@ -1,0 +1,39 @@
+#!/bin/bash
+#
+# {{ appname }}test
+#
+# Test code style and a few unit tests
+#
+# Andrew DeOrio <awdeorio@umich.edu>
+
+# List of files and directories to check
+SRC="
+  setup.py
+  {{ appname }}
+"
+
+# Stop on errors, print commands
+set -e
+set -x
+
+# Run unit tests
+python -m unittest discover --start-directory tests --verbose
+
+# Check code style
+pydocstyle ${SRC}
+
+# Check internal documentation style
+pycodestyle ${SRC}
+
+# Code static analysis
+pylint \
+  --reports=n \
+  --disable=cyclic-import \
+  ${SRC}
+
+# Clean up
+set +x
+echo "========================================"
+echo "$0 $@"
+echo "PASS"
+echo "========================================"

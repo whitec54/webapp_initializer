@@ -1,0 +1,27 @@
+#!/bin/bash
+#
+# {{ appname }}run
+#
+# Clean, build and start server
+#
+# Andrew DeOrio <awdeorio@umich.edu>
+
+# Stop on errors, print commands
+set -e
+set -x
+
+# Create database if needed
+if ! test -e var/{{ appname }}.sqlite3; then
+  ./bin/db create
+fi
+
+# Set up environment for Flask debug server
+export FLASK_DEBUG=True
+export FLASK_APP={{ appname }}
+export {{ appname }}_SETTINGS=config.py
+
+# Compile in the background
+./node_modules/.bin/webpack --watch &
+
+# Run development server
+flask run --port 8000

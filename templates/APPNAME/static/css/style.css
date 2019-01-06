@@ -1,0 +1,190 @@
+/* General stuff used by all routes */
+html, body {
+    height: 100%
+}
+
+body {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+}
+
+img {
+    /* resize images */
+    width: 100%;
+    height: auto;
+}
+
+.banner {
+    width: 100%;
+    height: 40px;
+    line-height: 40px; /* vertical centering */
+    text-align: center;
+    padding-bottom: 20px;
+    border-bottom: solid grey 1px;
+    margin-bottom: 55px;
+}
+
+.banner .left {
+    font-size: 200%;
+	  font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
+	  font-size: 32px;
+    float: left;
+}
+
+.banner .left img {
+    height: 40px;
+    width: auto;
+}
+
+.banner .middle {
+    display: inline-block;
+    margin: 0 auto; /* centering */
+    text-align: center;
+}
+
+.banner .right {
+    float: right;
+    text-align: right;
+}
+
+.banner .create {
+    padding-right: 20px;
+}
+
+/* feed and post are used for the main (index) route */
+.feed {
+    margin:0 auto; /* centering */
+    max-width: 600px;
+}
+
+.vertical {
+    /* vertical has the photo on top and the comments below */
+    border: 1px solid gray;
+    border-radius: 4px;
+}
+
+.notpost {
+    padding: 5px;
+}
+
+.vertical:not(:last-child) {
+    /* Space between posts */
+    margin-bottom: 20px;
+}
+
+.top {
+    width: 560px;
+    height: 36px;
+    padding-top: 14px;
+    padding-bottom: 14px;
+    padding-left: 20px;
+    padding-right: 20px;
+    line-height:36px; /* vertical centering */
+}
+
+.middle {
+}
+
+.bottom {
+    padding: 5px;
+}
+
+/* horizontal is used for /p/<picid>/ routes */
+/* horizontal has photo on the left and comments on the right */
+.horizontal-content {
+    margin:0 auto; /* centering */
+    width: 900px;
+}
+
+.horizontal {
+    height: 600px;
+    border: 1px solid gray;
+    border-radius: 4px;
+}
+
+.horizontal .left {
+    width: 592px;
+    height: 592px;
+    float: left;
+    padding: 5px;
+}
+
+.horizontal .right {
+    width: 260px;
+    float: left;
+    padding: 5px;
+}
+
+.horizontal .right .top {
+    width: 260px;
+    height: 36px;
+    line-height:36px; /* vertical centering */
+}
+
+.horizontal .right .bottom {
+    padding: 20px;
+}
+
+.horizontal .left img {
+    /* resize images */
+    width: 600px;
+    max-height: 592px;
+}
+
+.usericon {
+    width:30px;
+    position: relative;
+    float: left;
+}
+
+.username {
+    font-weight: bold;
+    position: relative;
+    float: left;
+    padding-left: 10px;
+}
+
+.userinfo {
+    float: right;
+    color: grey;
+}
+
+.userinfo a {
+    text-decoration: none;
+    color: grey;
+    font-weight: bold;
+}
+
+.profile-username {
+    font-size: 200%;
+}
+
+.feed .tile {
+    /* tile is used for the /u/<userid>/ route to show a users' photos */
+    float:left;
+    width:280px;
+    height:280px;
+    overflow: hidden;
+    margin: 10px;
+    position: relative;
+}
+
+.tile .img {
+    /* crop image */
+    position: absolute;
+    left: -1000%;
+    right: -1000%;
+    top: -1000%;
+    bottom: -1000%;
+    margin: auto;
+    min-height: 100%;
+    min-width: 100%;
+}

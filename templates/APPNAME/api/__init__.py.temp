@@ -1,0 +1,3 @@
+"""{{ appname }} REST API."""
+
+from {{ appname }}.api.main import main
